@@ -1,15 +1,15 @@
 package bj11650;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.*;
 
 public class Main {
+    static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
     public static void main(String[] args) throws IOException {
         List<Integer> xList=new LinkedList<>();
         Map<Integer,LinkedList<Integer>> x2y=new HashMap<>();
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
         int numbers = Integer.parseInt(br.readLine());
         for(int i=0; i<numbers; i++){
             String[] input=br.readLine().split(" ");
@@ -23,23 +23,26 @@ public class Main {
             } else {
                 LinkedList<Integer> list=x2y.get(x);
                 list.add(y);
-                Collections.sort(list);
                 x2y.put(x,list);
             }
         }
         Collections.sort(xList);
-        for(int i=0; i<xList.size(); i++){
-            System.out.print(xList.get(i)+" ");
-            for()
+        Object[] xArray=xList.toArray();
+        int recentSearch=0;
+        for(int i=0; i<xArray.length; i++){
+            int x= (int) xArray[i];
+            if(x==recentSearch)
+                continue;
+            else
+                recentSearch=x;
+            LinkedList<Integer> y=x2y.get(x);
+            if(y.size()!=1)
+                Collections.sort(y);
+            for(int j=0; j<y.size(); j++){
+                bw.write(x+" "+y.get(j)+"\n");
+                bw.flush();
+            }
         }
+        bw.close();
     }
 }
-
-/*
-5
-3 4
-1 1
-1 -1
-2 2
-3 3
- */
