@@ -1,33 +1,29 @@
 package bj10942;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 
 public class Main {
-    static String[] input;
+    static int[] input;
+    static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         br.readLine();
-        input=br.readLine().split(" ");
+        String[] readData=br.readLine().split(" ");
+        input=new int[readData.length];
+        for(int i=0; i<readData.length; i++){
+            input[i]=Integer.parseInt(readData[i]);
+        }
         int count = Integer.parseInt(br.readLine());
         for(int i=0; i<count; i++){
             String[] question=br.readLine().split(" ");
-            String toString=makeString(Integer.parseInt(question[0]),Integer.parseInt(question[1]));
-            System.out.println(isPalindrome(toString)?1:0);
+            bw.write((isPalindrome(Integer.parseInt(question[0]),Integer.parseInt(question[1]))?1:0)+"\n");
         }
+        bw.close();
     }
-    static String makeString(int startIndex, int finishIndex){
-        StringBuilder sb=new StringBuilder();
-        for(int i=startIndex-1; i<finishIndex; i++){
-            sb.append(input[i]);
-        }
-        return sb.toString();
-    }
-    static boolean isPalindrome(String input) {
-        input = input.toLowerCase();
-        for (int i = 0; i < input.length() / 2; i++) {
-            if (input.charAt(i) != input.charAt(input.length() - i - 1))
+    static boolean isPalindrome(int startIndex, int finishIndex) {
+        int length=startIndex-1+(finishIndex-startIndex+1)/2;
+        for (int i = startIndex-1; i < length; i++) {
+            if (input[i] != input[finishIndex - (i-startIndex+1) - 1])
                 return false;
         }
         return true;
