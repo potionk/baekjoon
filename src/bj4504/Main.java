@@ -18,12 +18,3 @@ public class Main {
         return input % num == 0;
     }
 }
-/*
-3
-1
-7
-99
-321
-777
-0
- */
