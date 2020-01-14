@@ -6,25 +6,17 @@ import java.io.InputStreamReader;
 
 public class Main {
     static char[] bomb;
+    static boolean[] liveStr;
     static char[] str;
-    static int start;
-    static int end;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         str=br.readLine().toCharArray();
         bomb=br.readLine().toCharArray();
+        liveStr=new boolean[str.length];
 
-        boolean found = false;
+        boolean found;
         do {
             if (find()) {
-                char[] afterBomb=new char[str.length-bomb.length];
-                for(int i=0; i<start; i++){
-                    afterBomb[i]=str[i];
-                }
-                for(int i=end; i<str.length; i++){
-                    afterBomb[i-bomb.length]=str[i];
-                }
-                str=afterBomb;
                 found = true;
             } else {
                 found = false;
@@ -33,26 +25,44 @@ public class Main {
         if(str.length==0)
             System.out.println("FRULA");
         else{
+            boolean isEmpty=true;
             for(int i=0; i<str.length; i++){
+                if(liveStr[i])
+                    continue;
                 System.out.print(str[i]);
+                isEmpty=false;
             }
+            if(isEmpty)
+                System.out.println("FRULA");
         }
     }
     public static boolean find(){
-        boolean isBomb=true;
-        if(str.length-bomb.length+1<0)
-            return false;
+        boolean isBomb=false;
+        int[] bombIndex=new int[bomb.length];
         for(int i=0; i<str.length-bomb.length+1; i++){
+            int t=0;
+            if(liveStr[i])
+                continue;
             isBomb=true;
-            for(int j=i; j<bomb.length+i; j++){
-                if(str[j]!=bomb[j-i]){
+            for(int j=i; j<bomb.length+i+t; j++){
+                while(liveStr[j]){
+                    j++;
+                    t++;
+                    if(j>liveStr.length-bomb.length+(j-i))
+                        break;
+                }
+                if(j>liveStr.length-bomb.length+(j-i))
+                    break;
+                if(str[j]!=bomb[j-i-t]){
                     isBomb=false;
                     break;
                 }
+                bombIndex[j-i-t]=j;
             }
             if(isBomb){
-                start=i;
-                end=i+bomb.length;
+                for(int j=0; j<bombIndex.length; j++){
+                    liveStr[bombIndex[j]]=true;
+                }
                 break;
             }
         }
