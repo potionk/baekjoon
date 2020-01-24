@@ -46,8 +46,14 @@ public class Main {
         for(int i=0; i<tcLen-1; i++){
             if(incDp[i]==1&&decDp[i+1]==1)
                 result[i]=1;
-            else
-                result[i]=incDp[i]+decDp[i+1];
+            else{
+                int base=incDp[i]+decDp[i+1];
+                if(testCase[i]==testCase[i+1])
+                    result[i]=base-1;
+                else
+                    result[i]=base;
+            }
+
         }
         result[tcLen-1]=decDp[0];
         result[tcLen]=incDp[incDp.length-1];
