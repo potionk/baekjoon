@@ -10,6 +10,7 @@ public class Main {
     static int[][] graph;
     static int count;
     static int xSize, ySize;
+    static int totalNonMinusOne;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         String[] testCase=br.readLine().split(" ");
@@ -17,6 +18,8 @@ public class Main {
         ySize= Integer.parseInt(testCase[1]);
         ArrayList<XY> list=new ArrayList<>();
         count=0;
+        int nonMinusOne=0;
+        totalNonMinusOne=0;
         graph=new int[ySize][xSize];
         for(int i=0; i<ySize; i++){
             String[] input=br.readLine().split(" ");
@@ -24,18 +27,16 @@ public class Main {
                 graph[i][j]= Integer.parseInt(input[j]);
                 if (graph[i][j] == 1){
                     list.add(new XY(j,i));
+                    totalNonMinusOne++;
                 }
-
+                if(graph[i][j]!=-1)
+                    nonMinusOne++;
             }
         }
         bfs(list);
-        for(int i=0; i<ySize; i++){
-            for(int j=0; j<xSize; j++){
-                if(graph[i][j]==0){
-                    System.out.println(-1);
-                    return;
-                }
-            }
+        if(totalNonMinusOne!=nonMinusOne){
+            System.out.println(-1);
+            return;
         }
         System.out.println(count);
     }
@@ -53,21 +54,25 @@ public class Main {
                     queue.add(new XY(x,y+1));
                     graph[y+1][x]=1;
                     isContinue=true;
+                    totalNonMinusOne++;
                 }
                 if(!(x+1>=xSize)&&graph[y][x+1]==0){
                     queue.add(new XY(x+1,y));
                     graph[y][x+1]=1;
                     isContinue=true;
+                    totalNonMinusOne++;
                 }
                 if(!(y-1<0)&&graph[y-1][x]==0){
                     queue.add(new XY(x,y-1));
                     graph[y-1][x]=1;
                     isContinue=true;
+                    totalNonMinusOne++;
                 }
                 if(!(x-1<0)&&graph[y][x-1]==0){
                     queue.add(new XY(x-1,y));
                     graph[y][x-1]=1;
                     isContinue=true;
+                    totalNonMinusOne++;
                 }
             }
             if(isContinue)
