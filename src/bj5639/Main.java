@@ -1,10 +1,10 @@
 package bj5639;
 
 import java.io.BufferedReader;
-        import java.io.IOException;
-        import java.io.InputStreamReader;
-        import java.util.ArrayList;
-        import java.util.List;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
     static int[] testCase;
@@ -20,37 +20,22 @@ public class Main {
         for(int i=0; i<list2Array.length; i++){
             testCase[i]=(int)list2Array[i];
         }
-        if(testCase.length==1)
-            System.out.println(testCase[0]);
-        else {
-            if(testCase[0]>testCase[1])
-                pre2post(0, testCase.length-1,1);
-            else
-                pre2post(0, testCase.length-1,2);
-        }
-
+        pre2post(0, testCase.length-1);
     }
-    public static void pre2post(int startIndex, int endIndex, int mode){
-        if(mode==1&&startIndex==endIndex) {
-            System.out.println(testCase[startIndex]);
+    public static void pre2post(int startIndex, int endIndex){
+//        if(startIndex==endIndex){
+//            System.out.println(testCase[startIndex]);
+//            return;
+//        } else if(startIndex>endIndex)
+//            return;
+        if(startIndex>endIndex)
             return;
-        }
-        if(startIndex<testCase.length&&mode==2&&startIndex>endIndex){
-            System.out.println(testCase[startIndex]);
-            return;
-        }
-        int nextEndIndex=startIndex;
-        while(nextEndIndex+1<testCase.length&&testCase[startIndex]>testCase[++nextEndIndex]);
+        int nextEndIndex=startIndex+1;
 
-        if(nextEndIndex<testCase.length){
-            if(testCase[startIndex]<testCase[nextEndIndex]&&nextEndIndex-startIndex>1){
-                pre2post(startIndex+1,nextEndIndex-1,1);
-                pre2post(nextEndIndex,endIndex,1);
-            } else {
-                pre2post(startIndex+1,nextEndIndex,2);
-            }
-        }
-        if(startIndex<testCase.length)
-            System.out.println(testCase[startIndex]);
+        while(nextEndIndex<testCase.length&&testCase[startIndex]>testCase[nextEndIndex])
+            nextEndIndex++;
+        pre2post(startIndex+1,nextEndIndex-1);
+        pre2post(nextEndIndex,endIndex);
+        System.out.println(testCase[startIndex]);
     }
 }
