@@ -6,7 +6,7 @@ count = 0
 save = 0
 index = 1
 while (True):
-    if save < tc:
+    if save <= tc:
         save += index
         index = index + 1
         count = count + 1
