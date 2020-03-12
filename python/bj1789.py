@@ -5,7 +5,7 @@ tc = int(sys.stdin.readline())
 count = 0
 save = 0
 index = 1
-while (True):
+while True:
     if save <= tc:
         save += index
         index = index + 1
