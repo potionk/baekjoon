@@ -1,4 +1,4 @@
-package bj5652;
+package bj5622;
 
 import java.io.BufferedReader;
 import java.io.IOException;
