@@ -1,47 +1,45 @@
 package bj1463;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.LinkedList;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        Map<Integer, Integer> resultMap = new HashMap<>();
-        int input = sc.nextInt();
-        resultMap.put(1,0);
-        resultMap.put(2,1);
-        resultMap.put(3,1);
-        for(int i=4; i<=input; i++){
-            int op=i;
-            int count=0;
-            if(op%3==0){
-                if(resultMap.get(op/3)<=resultMap.get(op-1)) {
-                    op /= 3;
-                    count++;
-                } else if(resultMap.get(op/3)+1>resultMap.get(op-2)){
-                    op-=2;
-                    count+=2;
-                } else {
-                    op--;
-                    count++;
-                }
-            } else if(op%2==0){
-                if(resultMap.get(op/2)<=resultMap.get(op-1)){
-                    op/=2;
-                    count++;
-                }
-                else{
-                    op--;
-                    count++;
-                }
-            } else{
-                op--;
-                count++;
+    static int[] count;
+    static boolean[] isVisited;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int testCase= Integer.parseInt(br.readLine());
+        count=new int[testCase+1];
+        isVisited=new boolean[testCase+1];
+        bfs(testCase);
+    }
+    public static void bfs(int start){
+        LinkedList<Integer> queue = new LinkedList<>();
+        count[start]=0;
+        queue.add(start);
+        while(!queue.isEmpty()){
+            int p=queue.poll();
+            if(p==1){
+                System.out.println(count[p]);
+                break;
             }
-            count+=resultMap.get(op);
-            resultMap.put(i,count);
+            if(p%3==0&&!isVisited[p/3]){
+                queue.add(p/3);
+                count[p/3]=count[p]+1;
+                isVisited[p/3]=true;
+            }
+            if(p%2==0&&!isVisited[p/2]){
+                queue.add(p/2);
+                count[p/2]=count[p]+1;
+                isVisited[p/2]=true;
+            }
+            if(p-1>1&&!isVisited[p-1]){
+                queue.add(p-1);
+                count[p-1]=count[p]+1;
+                isVisited[p-1]=true;
+            }
         }
-        System.out.println(resultMap.get(input));
     }
 }
