@@ -13,7 +13,6 @@ public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int testCase = Integer.parseInt(br.readLine());
-        int mid = -1;
         minHeap = new int[100001];
         for(int i=0; i<100001; i++){
             minHeap[i]=Integer.MAX_VALUE;
@@ -22,27 +21,20 @@ public class Main {
         leftHeapSize = 0;
         rightHeapSize = 0;
         for (int i = 0; i < testCase; i++) {
-            int input = Integer.parseInt(br.readLine());
-            if (i == 0) {
-                mid = input;
-            } else if ((i + 1) % 2 == 0) {
-                if (input <= mid) {
-                    leftHeapInsert(input);
-                    rightHeapInsert(mid);
-                    mid=leftHeapDelete();
-                } else {
-                    rightHeapInsert(input);
-                }
-            } else {
-                if (input >= mid) {
-                    rightHeapInsert(input);
-                    leftHeapInsert(mid);
-                    mid = rightHeapDelete();
-                } else {
-                    leftHeapInsert(input);
-                }
+            int input= Integer.parseInt(br.readLine());
+            if(i==0)
+                leftHeapInsert(input);
+            else if(leftHeapSize==rightHeapSize)
+                leftHeapInsert(input);
+            else
+                rightHeapInsert(input);
+            if(leftHeapSize>0&&rightHeapSize>0&&(maxHeap[1]>minHeap[1])){
+                int leftData=leftHeapDelete();
+                int rightData=rightHeapDelete();
+                rightHeapInsert(leftData);
+                leftHeapInsert(rightData);
             }
-            System.out.println(mid);
+            System.out.println(maxHeap[1]);
         }
     }
 
@@ -64,7 +56,7 @@ public class Main {
         minHeap[rightHeapSize--] = Integer.MAX_VALUE;
         for (int index = 1; index * 2 <= rightHeapSize; ) {
             if (!(minHeap[index * 2] > minHeap[index] && minHeap[index * 2 + 1] > minHeap[index])) {
-                if (minHeap[index * 2] > minHeap[index * 2 + 1]) {
+                if (minHeap[index * 2] >= minHeap[index * 2 + 1]) {
                     minHeapSwap(index, index * 2 + 1);
                     index = index * 2 + 1;
                 } else {
@@ -96,7 +88,7 @@ public class Main {
         maxHeap[leftHeapSize--] = 0;
         for (int index = 1; index * 2 <= leftHeapSize; ) {
             if (!(maxHeap[index * 2] < maxHeap[index] && maxHeap[index * 2 + 1] < maxHeap[index])) {
-                if (maxHeap[index * 2] < maxHeap[index * 2 + 1]) {
+                if (maxHeap[index * 2] <= maxHeap[index * 2 + 1]) {
                     maxHeapSwap(index, index * 2 + 1);
                     index = index * 2 + 1;
                 } else {
