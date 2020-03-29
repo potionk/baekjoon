@@ -8,65 +8,44 @@ public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int N, M, blocks;
-        int resultT=Integer.MAX_VALUE, resultB=-1;
-        String[] testCase=br.readLine().split(" ");
-        N= Integer.parseInt(testCase[0]);
-        M= Integer.parseInt(testCase[1]);
-        blocks= Integer.parseInt(testCase[2]);
-        int[][] map=new int[N][M];
-        Result[][] result=new Result[N][M];
-        for(int i=0; i<N; i++){
-            String[] input=br.readLine().split(" ");
-            for(int j=0; j<M; j++){
-                map[i][j]= Integer.parseInt(input[j]);
+        int resultTime = Integer.MAX_VALUE, resultHeight = -1;
+        int maxHeight = Integer.MIN_VALUE;
+        int minHeight = Integer.MAX_VALUE;
+        String[] testCase = br.readLine().split(" ");
+        N = Integer.parseInt(testCase[0]);
+        M = Integer.parseInt(testCase[1]);
+        blocks = Integer.parseInt(testCase[2]);
+        int[][] map = new int[N][M];
+        for (int i = 0; i < N; i++) {
+            String[] input = br.readLine().split(" ");
+            for (int j = 0; j < M; j++) {
+                map[i][j] = Integer.parseInt(input[j]);
+                maxHeight = Math.max(maxHeight, map[i][j]);
+                minHeight = Math.min(minHeight, map[i][j]);
             }
         }
-        for(int i=0; i<N; i++){
-            for(int j=0; j<M; j++){
-                int timeResult=0;
-                int tempBlocks=blocks;
-                for(int findY=0; findY<N; findY++){
-                    for(int findX=0; findX<M; findX++){
-                        if(findY==i&&findX==j)
-                            continue;
-                        if(map[findY][findX]>map[i][j]){
-                            timeResult+=(map[findY][findX]-map[i][j])*2;
-                            tempBlocks+=map[findY][findX]-map[i][j];
-                        } else if(map[findY][findX]<map[i][j]&&tempBlocks>0){
-                            timeResult+=(map[i][j]-map[findY][findX]);
-                            tempBlocks-=(map[i][j]-map[findY][findX]);
-                        }
+        for (int i = minHeight; i <= maxHeight; i++) {
+            int thisTime = 0;
+            int thisBlock = blocks;
+            for (int y = 0; y < N; y++) {
+                for (int x = 0; x < M; x++) {
+                    if (map[y][x] < i) {
+                        thisBlock -= (i - map[y][x]);
+                        thisTime += (i - map[y][x]);
+                    } else {
+                        thisBlock += (map[y][x] - i);
+                        thisTime += (map[y][x] - i) * 2;
                     }
                 }
-                result[i][j]=new Result(timeResult, map[i][j]);
             }
-        }
-
-        for(int i=0; i<N; i++){
-            for(int j=0; j<M; j++){
-                if(resultT>=result[i][j].getTime()){
-                    resultT=result[i][j].getTime();
-                    resultB=Math.max(resultB, result[i][j].getHeight());
+            if (thisBlock >= 0) {
+                if (resultTime >= thisTime) {
+                    resultTime = thisTime;
+                    resultHeight = i;
                 }
+
             }
         }
-        System.out.println(resultT+" "+resultB);
-    }
-}
-
-class Result{
-    int time;
-    int height;
-
-    public int getTime() {
-        return time;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-    public Result(int time, int height){
-        this.time=time;
-        this.height=height;
+        System.out.println(resultTime + " " + resultHeight);
     }
 }
