@@ -7,26 +7,25 @@ import java.io.InputStreamReader;
 public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int N = 1 + Integer.parseInt(br.readLine()) * 2;
+        int N = Integer.parseInt(br.readLine());
         int testCaseSize = Integer.parseInt(br.readLine());
         char[] testCase = br.readLine().toCharArray();
-        boolean isI = true;
         int count = 0;
         for (int i = 0; i < testCaseSize - N; i++) {
-            for (int j = i; j < i + N; j++) {
-                if (isI) {
-                    if (testCase[j] != 'I')
-                        break;
-                    if (j == i + N - 1)
-                        count++;
-                    isI = false;
-                } else {
-                    if (testCase[j] != 'O')
-                        break;
-                    isI = true;
+            if (testCase[i] == 'I' && testCase[i + 1] == 'O') {
+                int ioiCount = 0;
+                if(i+2<testCaseSize){
+                    while (testCase[i + 1] == 'O' && testCase[i + 2] == 'I') {
+                        i += 2;
+                        ioiCount++;
+                        if (ioiCount >= N)
+                            count++;
+                        if(i+2>=testCaseSize){
+                            break;
+                        }
+                    }
                 }
             }
-            isI=true;
         }
         System.out.println(count);
     }
