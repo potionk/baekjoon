@@ -10,7 +10,8 @@ public class Main {
         int input= Integer.parseInt(br.readLine());
         int[] data=new int[input];
         data[0]=1;
-        data[1]=2;
+        if(input>1)
+            data[1]=2;
         for(int i=2; i<data.length; i++){
             data[i]=(data[i-1]+data[i-2])%15746;
         }
