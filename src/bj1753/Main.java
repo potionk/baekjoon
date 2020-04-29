@@ -1,3 +1,5 @@
+package bj1753;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
@@ -17,9 +19,8 @@ public class Main {
         int startVertex = Integer.parseInt(br.readLine());
         dist = new int[vertex + 1];
         graph = new ArrayList[vertex + 1];
-        for (int i = 0; i < vertex + 1; i++) {
+        for (int i = 0; i < vertex + 1; i++)
             graph[i] = new ArrayList<>();
-        }
         for (int i = 0; i < edge; i++) {
             String[] readEdge = br.readLine().split(" ");
             int start = Integer.parseInt(readEdge[0]);
@@ -36,73 +37,46 @@ public class Main {
                 v = new Vertex(i, Integer.MAX_VALUE);
             priorityQueue.add(v);
         }
-        dist[startVertex]=0;
-        dijkstra(startVertex);
-        for(int i=1; i<=vertex; i++){
-            if(dist[i]== Integer.MAX_VALUE)
+        dist[startVertex] = 0;
+        dijkstra();
+        for (int i = 1; i <= vertex; i++) {
+            if (dist[i] == Integer.MAX_VALUE)
                 bw.write("INF\n");
             else
-                bw.write(dist[i]+"\n");
+                bw.write(dist[i] + "\n");
         }
         bw.flush();
     }
 
-    public static void dijkstra(int start) {
+    public static void dijkstra() {
         while (true) {
             Vertex p = priorityQueue.poll();
-//            int postIndex = p.getIndex();
-            int post=dist[p.getIndex()];
-            if (p.getDist() == Integer.MAX_VALUE)
+            int post = dist[p.getLeft()];
+            if (p.getRight() == Integer.MAX_VALUE)
                 break;
-            if (post >= p.getDist()) {
-                ArrayList<Pair<Integer, Integer>> list = graph[p.getIndex()];
-                for (int i = 0; i < list.size(); i++) {
-                    Pair<Integer, Integer> next = list.get(i);
-                    int nextIndex=next.getLeft();
-                    int weight=next.getRight();
-                    if(dist[nextIndex]>post+weight){
-                        priorityQueue.add(new Vertex(nextIndex, post+weight));
-                        dist[nextIndex]=post+weight;
+            if (post >= p.getRight()) {
+                ArrayList<Pair<Integer, Integer>> list = graph[p.getLeft()];
+                for (Pair<Integer, Integer> next : list) {
+                    int nextIndex = next.getLeft();
+                    int weight = next.getRight();
+                    if (dist[nextIndex] > post + weight) {
+                        priorityQueue.add(new Vertex(nextIndex, post + weight));
+                        dist[nextIndex] = post + weight;
                     }
                 }
             }
-
         }
     }
-
 }
 
-class Vertex implements Comparable<Vertex> {
-    int index;
-    int dist;
-
+class Vertex extends Pair<Integer, Integer> implements Comparable<Vertex> {
     public Vertex(int index, int dist) {
-        this.index = index;
-        this.dist = dist;
-    }
-
-    public int getIndex() {
-        return index;
-    }
-
-
-    public int getDist() {
-        return dist;
-    }
-
-    public void setDist(int dist) {
-        this.dist = dist;
+        super(index, dist);
     }
 
     @Override
     public int compareTo(Vertex target) {
-        if (this.dist < target.dist) {
-            return -1;
-        } else if (this.dist == target.dist) {
-            return 0;
-        } else {
-            return 1;
-        }
+        return this.getRight().compareTo(target.getRight());
     }
 }
 
