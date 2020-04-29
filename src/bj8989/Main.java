@@ -17,9 +17,9 @@ public class Main {
                 clockTime[j] = new ClockTime(Integer.parseInt(time[0]), Integer.parseInt(time[1]));
             }
             Arrays.sort(clockTime);
-            int hour=clockTime[2].getHour();
-            int min=clockTime[2].getMin();
-            System.out.println((hour<10?"0"+hour:hour) + ":" + (min<10?"0"+min:min));
+            int hour = clockTime[2].getHour();
+            int min = clockTime[2].getMin();
+            System.out.println((hour < 10 ? "0" + hour : hour) + ":" + (min < 10 ? "0" + min : min));
         }
     }
 }
@@ -28,11 +28,11 @@ class ClockTime implements Comparable<ClockTime> {
     int hour;
     int min;
 
-    public double getAngle() {
+    public int getAngle() {
         return angle;
     }
 
-    double angle;
+    int angle;
 
     public int getHour() {
         return hour;
@@ -45,19 +45,13 @@ class ClockTime implements Comparable<ClockTime> {
     public ClockTime(int hour, int min) {
         this.hour = hour;
         this.min = min;
-        double aHour = hour%12;
-        double cal = Math.abs((30 * aHour + (double)min / 2) - min*6);
-        this.angle = cal>180?360-cal:cal;
+        int aHour = hour % 12;
+        int cal = Math.abs((60 * aHour + min) - min * 12);
+        this.angle = cal > 360 ? 720 - cal : cal;
     }
 
     @Override
     public int compareTo(ClockTime o) {
-        if (this.getAngle() < o.getAngle()) {
-            return -1;
-        } else if (this.getAngle() == o.getAngle()) {
-            return 0;
-        } else {
-            return 1;
-        }
+        return Integer.compare(this.getAngle(), o.getAngle());
     }
 }
