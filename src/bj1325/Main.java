@@ -8,41 +8,37 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Main {
-    static ArrayList<Integer>[] graph;
+    static boolean[][] graph;
     static boolean[] bfsIsVisited;
     static int max;
     static List<Integer> result;
+    static int vertexNum;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         String[] testCase = br.readLine().split(" ");
-        int vertexNum = Integer.parseInt(testCase[0]);
+        vertexNum = Integer.parseInt(testCase[0]);
         int edgeNum = Integer.parseInt(testCase[1]);
         result = new ArrayList<>();
         max = -1;
-        graph = new ArrayList[vertexNum + 1];
-        for (int i = 0; i < vertexNum + 1; i++) {
-            graph[i] = new ArrayList<>();
-        }
+        graph = new boolean[vertexNum + 1][vertexNum + 1];
         for (int i = 0; i < edgeNum; i++) {
             String[] edge = br.readLine().split(" ");
             int a = Integer.parseInt(edge[0]);
             int b = Integer.parseInt(edge[1]);
-            graph[b].add(a);
+            graph[b][a] = true;
         }
         for (int i = 1; i < vertexNum + 1; i++) {
             bfsIsVisited = new boolean[vertexNum + 1];
             int res = bfs(i);
-            if (res > max) {
-                result = new ArrayList<>();
-                result.add(i);
-                max = res;
-            } else if (res == max) {
-                result.add(i);
-            }
+            result.add(res);
+            max = Math.max(res, max);
         }
-        for (Integer integer : result) {
-            System.out.print(integer + " ");
+        int resSize = result.size();
+        for (int i = 0; i < resSize; i++) {
+            int c = result.get(i);
+            if (c == max)
+                System.out.print(i + 1 + " ");
         }
     }
 
@@ -55,11 +51,12 @@ public class Main {
             int queueSize = queue.size();
             for (int k = 0; k < queueSize; k++) {
                 int p = queue.poll();
-                for (int i = 0; i < graph[p].size(); i++) {
-                    int nextVertex = graph[p].get(i);
-                    if (!bfsIsVisited[nextVertex]) {
-                        queue.add(nextVertex);
-                        bfsIsVisited[nextVertex] = true;
+                for (int i = 1; i < vertexNum; i++) {
+                    if(graph[p][i]){
+                        if (!bfsIsVisited[i]) {
+                            queue.add(i);
+                            bfsIsVisited[i] = true;
+                        }
                     }
                 }
             }
