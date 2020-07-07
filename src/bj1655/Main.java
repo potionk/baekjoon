@@ -14,23 +14,23 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int testCase = Integer.parseInt(br.readLine());
         minHeap = new int[100001];
-        for(int i=0; i<100001; i++){
-            minHeap[i]=Integer.MAX_VALUE;
+        for (int i = 0; i < 100001; i++) {
+            minHeap[i] = Integer.MAX_VALUE;
         }
         maxHeap = new int[100001];
         leftHeapSize = 0;
         rightHeapSize = 0;
         for (int i = 0; i < testCase; i++) {
-            int input= Integer.parseInt(br.readLine());
-            if(i==0)
+            int input = Integer.parseInt(br.readLine());
+            if (i == 0)
                 leftHeapInsert(input);
-            else if(leftHeapSize==rightHeapSize)
+            else if (leftHeapSize == rightHeapSize)
                 leftHeapInsert(input);
             else
                 rightHeapInsert(input);
-            if(leftHeapSize>0&&rightHeapSize>0&&(maxHeap[1]>minHeap[1])){
-                int leftData=leftHeapDelete();
-                int rightData=rightHeapDelete();
+            if (leftHeapSize > 0 && rightHeapSize > 0 && (maxHeap[1] > minHeap[1])) {
+                int leftData = leftHeapDelete();
+                int rightData = rightHeapDelete();
                 rightHeapInsert(leftData);
                 leftHeapInsert(rightData);
             }
