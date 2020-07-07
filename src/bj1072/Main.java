@@ -14,11 +14,7 @@ public class Main {
         if (Z == 100 || Z == 99) {
             System.out.println(-1);
         } else {
-            int count = 1;
-            while (((int) ((++Y * 100) / ++X)) == Z) {
-                count++;
-            }
-            System.out.println(count);
+            System.out.println((int) Math.ceil(((Z + 1) * X - 100 * Y) / (99 - Z)));
         }
     }
 }
