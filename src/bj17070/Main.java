@@ -8,9 +8,7 @@ import java.util.List;
 
 public class Main {
     static int[][] graph;
-    static boolean[][] dfsIsVisited;
     static int size;
-    static List<Integer> result;
     static int count;
     static int[] xArrow, yArrow;
 
@@ -18,8 +16,6 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         size = Integer.parseInt(br.readLine());
         graph = new int[size][size];
-        dfsIsVisited = new boolean[size][size];
-        result = new ArrayList<>();
         count = 0;
         xArrow = new int[]{1, 1, 0};
         yArrow = new int[]{0, 1, 1};
