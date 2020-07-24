@@ -44,26 +44,28 @@ public class Main {
         bfsIsVisited[y][x][0] = true;
         count[y][x][0] = 1;
         while (queue.size() != 0) {
-            Point next = queue.poll();
-            x = next.getX();
-            y = next.getY();
-            int state = next.getState();
+            Point p = queue.poll();
+            x = p.getX();
+            y = p.getY();
+            int state = p.getState();
             for (int i = 0; i < 4; i++) {
-                if (!(y + yArrow[i] >= ySize) && !(x + xArrow[i] >= xSize) && !(y + yArrow[i] < 0) && !(x + xArrow[i] < 0)) {
-                    if (graph[y + yArrow[i]][x + xArrow[i]] == 1 && state == 0) {
-                        queue.add(new Point(x + xArrow[i], y + yArrow[i], 1));
-                        bfsIsVisited[y + yArrow[i]][x + xArrow[i]][1] = true;
-                        count[y + yArrow[i]][x + xArrow[i]][1] = count[y][x][0] + 1;
+                int nextY = y + yArrow[i];
+                int nextX = x + xArrow[i];
+                if (!(nextY >= ySize) && !(nextX >= xSize) && !(nextY < 0) && !(nextX < 0)) {
+                    if (graph[nextY][nextX] == 1 && state == 0) {
+                        queue.add(new Point(nextX, nextY, 1));
+                        bfsIsVisited[nextY][nextX][1] = true;
+                        count[nextY][nextX][1] = count[y][x][0] + 1;
                     }
-                    if (graph[y + yArrow[i]][x + xArrow[i]] == 0) {
-                        if (state == 0 && !bfsIsVisited[y + yArrow[i]][x + xArrow[i]][0]) {
-                            queue.add(new Point(x+ xArrow[i], y + yArrow[i], 0));
-                            bfsIsVisited[y + yArrow[i]][x + xArrow[i]][0] = true;
-                            count[y + yArrow[i]][x + xArrow[i]][0] = count[y][x][0] + 1;
-                        } else if (state == 1 && !bfsIsVisited[y + yArrow[i]][x + xArrow[i]][1]) {
-                            queue.add(new Point(x + xArrow[i], y + yArrow[i], 1));
-                            bfsIsVisited[y + yArrow[i]][x + xArrow[i]][1] = true;
-                            count[y + yArrow[i]][x + xArrow[i]][1] = count[y][x][1] + 1;
+                    if (graph[nextY][nextX] == 0) {
+                        if (state == 0 && !bfsIsVisited[nextY][nextX][0]) {
+                            queue.add(new Point(nextX, nextY, 0));
+                            bfsIsVisited[nextY][nextX][0] = true;
+                            count[nextY][nextX][0] = count[y][x][0] + 1;
+                        } else if (state == 1 && !bfsIsVisited[nextY][nextX][1]) {
+                            queue.add(new Point(nextX, nextY, 1));
+                            bfsIsVisited[nextY][nextX][1] = true;
+                            count[nextY][nextX][1] = count[y][x][1] + 1;
                         }
                     }
                 }
