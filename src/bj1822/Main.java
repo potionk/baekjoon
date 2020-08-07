@@ -1,35 +1,28 @@
 package bj1822;
 
 import java.io.*;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         br.readLine();
-        Map<Integer, Boolean> map = new HashMap<>();
+        Set<Integer> checkDup = new HashSet<>();
         String[] AStr = br.readLine().split(" ");
         int[] A = strArr2intArr(AStr);
         Arrays.sort(A);
         for (Integer s : A) {
-            map.put(s, false);
+            checkDup.add(s);
         }
         String[] B = br.readLine().split(" ");
-        int bCount = 0;
         for (String s : B) {
-            int intS = Integer.parseInt(s);
-            if (map.get(intS) != null) {
-                map.put(intS, true);
-                bCount++;
-            }
+            checkDup.remove(Integer.parseInt(s));
         }
-        bw.write(A.length - bCount+"\n");
-        for (Integer s : A) {
-            if (!map.get(s)) {
-                bw.write(s + " ");
+        bw.write(checkDup.size() + "\n");
+        for (int value : A) {
+            if (checkDup.contains(value)) {
+                bw.write(value + " ");
             }
         }
         bw.flush();
