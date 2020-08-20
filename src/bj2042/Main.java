@@ -56,3 +56,13 @@ public class Main {
         }
     }
 
+    public static void update(int idx, int start, int end, int targetIdx, long diff) {
+        if (!(targetIdx < start || targetIdx > end)) {
+            tree[idx] += diff;
+            if (start != end) {
+                update(idx * 2, start, (start + end) / 2, targetIdx, diff);
+                update(idx * 2 + 1, (start + end) / 2 + 1, end, targetIdx, diff);
+            }
+        }
+    }
+}
