@@ -30,7 +30,7 @@ public class Main {
                     findNext(index, i, result);
                 }
             } else {
-                for (int i = before + 1; i < 10; i++) {ion
+                for (int i = before + 1; i < 10; i++) {
                     findNext(index, i, result);
                 }
             }
