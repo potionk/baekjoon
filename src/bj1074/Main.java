@@ -5,40 +5,43 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class Main {
-    int count=-1;
-    static int row;
-    static int colomn;
+    public static int count;
+    public static int targetY, targetX;
+    public static boolean isFinish;
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String input[] = br.readLine().split(" ");
-        int size=Integer.parseInt(input[0]);
-        row=Integer.parseInt(input[1]);
-        colomn=Integer.parseInt(input[2]);
-        Main m=new Main();
-        m.cal(0,0,(int)Math.pow(2,size));
+        isFinish = false;
+        String[] input = br.readLine().split(" ");
+        count = 0;
+        int size = Integer.parseInt(input[0]);
+        targetY = Integer.parseInt(input[1]);
+        targetX = Integer.parseInt(input[2]);
+        calZ(0, 0, (int) Math.pow(2, size));
     }
-    void cal(int row, int colomn, int size) {
-        if (this.row == row && this.colomn == colomn) {
-            count++;
+
+    public static void calZ(int row, int colomn, int size) {
+        if (isFinish) {
+            return;
+        }
+        if (targetY == row && targetX == colomn) {
             System.out.println(count);
+            isFinish = true;
             return;
-        }
-        else if (this.row >= row + size) {
-            count += size*size;
+        } else if (targetY >= row + size) {
+            count += size * size;
             return;
-        }
-        else if (this.colomn >= colomn + size) {
-            count += size*size;
+        } else if (targetX >= colomn + size) {
+            count += size * size;
             return;
-        }
-        else if (size == 1) {
+        } else if (size == 1) {
             count++;
             return;
         }
-        size/=2;
-        cal(row, colomn, size);
-        cal(row, colomn + size, size);
-        cal(row + size, colomn, size);
-        cal(row + size, colomn + size, size);
+        size /= 2;
+        calZ(row, colomn, size);
+        calZ(row, colomn + size, size);
+        calZ(row + size, colomn, size);
+        calZ(row + size, colomn + size, size);
     }
 }
