@@ -11,7 +11,7 @@ public class Main {
         char[] key = br.readLine().toCharArray();
         for (int i = 0; i < target.length; i++) {
             if (target[i] != ' ') {
-                target[i] = (char) ((target[i] - 97 - (key[i % key.length] - 97) + 25) % 26 + 97);
+                target[i] = (char) ((target[i] - key[i % key.length] + 25) % 26 + 97);
             }
         }
         for (char c : target) {
