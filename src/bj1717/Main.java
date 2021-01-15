@@ -3,17 +3,16 @@ package bj1717;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Main {
-    static Map<Integer, Integer> parent = new HashMap<>();
+    static int[] parent;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         String[] tc = br.readLine().split(" ");
         int n = Integer.parseInt(tc[0]);
         int m = Integer.parseInt(tc[1]);
+        parent = new int[n + 1];
         makeSet(n);
         for (int i = 0; i < m; i++) {
             String[] readLine = br.readLine().split(" ");
@@ -32,7 +31,7 @@ public class Main {
 
     public static void makeSet(int x) {
         for (int i = 0; i <= x; i++) {
-            parent.put(i, i);
+            parent[i] = i;
         }
     }
 
@@ -40,14 +39,14 @@ public class Main {
         int xRoot = find(x);
         int yRoot = find(y);
         if (xRoot != yRoot) {
-            parent.put(yRoot, xRoot);
+            parent[yRoot] = xRoot;
         }
     }
 
     public static int find(int x) { // x의 루트 반환
-        if (parent.get(x) != x) {
-            parent.put(x, find(parent.get(x)));
+        if (parent[x] != x) {
+            parent[x] = find(parent[x]);
         }
-        return parent.get(x);
+        return parent[x];
     }
 }
