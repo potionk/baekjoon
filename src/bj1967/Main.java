@@ -16,6 +16,10 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         weightMap = new HashMap<>();
         int nodeNum = Integer.parseInt(br.readLine());
+        if (nodeNum == 1) {
+            System.out.println(0);
+            return;
+        }
         tree = new ArrayList[nodeNum + 1];
         for (int i = 0; i < nodeNum + 1; i++) {
             tree[i] = new ArrayList<>();
