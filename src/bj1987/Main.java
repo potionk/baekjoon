@@ -1,70 +1,49 @@
 package bj1987;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.*;
 
 public class Main {
-    static int[][] graph;
-    static boolean[][] dfsIsVisited;
-    static int xSize, ySize;
-    static List<Integer> result;
+    static int[][] map;
+    static boolean[][] isVisited;
+    static int xSize, ySize, max;
     static boolean[] isAlphabetUsed;
-    static int max;
-    static int count;
+    static int[] xArrow, yArrow;
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         String[] input = br.readLine().split(" ");
         xSize = Integer.parseInt(input[1]);
         ySize = Integer.parseInt(input[0]);
-        graph = new int[ySize][xSize];
-        dfsIsVisited = new boolean[ySize][xSize];
-        isAlphabetUsed=new boolean[26];
-        max=1;
-        count=1;
-        result = new ArrayList<>();
+        map = new int[ySize][xSize];
+        isVisited = new boolean[ySize][xSize];
+        isAlphabetUsed = new boolean[26];
+        xArrow = new int[]{1, 0, -1, 0};
+        yArrow = new int[]{0, -1, 0, 1};
         for (int i = 0; i < ySize; i++) {
-            char[] read=br.readLine().toCharArray();
-            for(int j=0; j<xSize; j++){
-                graph[i][j]=(int)read[j]-65;
+            char[] read = br.readLine().toCharArray();
+            for (int j = 0; j < xSize; j++) {
+                map[i][j] = (int) read[j] - 65;
             }
         }
-        dfs(0, 0);
-
-        System.out.println(max);
+        dfs(0, 0, 1);
+        bw.write(max + "");
+        bw.close();
+        br.close();
     }
 
-    public static void dfs(int y, int x) {
-        dfsIsVisited[y][x] = true;
-        isAlphabetUsed[graph[y][x]]=true;
-        if (!(y - 1 < 0) && !dfsIsVisited[y - 1][x]){
-            if(!isAlphabetUsed[graph[y-1][x]]){
-                max=Math.max(++count,max);
-                dfs(y - 1, x);
+    public static void dfs(int y, int x, int count) {
+        isVisited[y][x] = true;
+        isAlphabetUsed[map[y][x]] = true;
+        max = Math.max(count, max);
+        for (int i = 0; i < 4; i++) {
+            int nextX = x + xArrow[i];
+            int nextY = y + yArrow[i];
+            if (0 <= nextX && 0 <= nextY && nextX < xSize && nextY < ySize && !isAlphabetUsed[map[nextY][nextX]] && !isVisited[nextY][nextX]) {
+                dfs(nextY, nextX, count + 1);
             }
         }
-        if (!(y + 1 >= ySize)&& !dfsIsVisited[y + 1][x]){
-            if(!isAlphabetUsed[graph[y+ 1][x]]){
-                max=Math.max(++count,max);
-                dfs(y+ 1, x);
-            }
-        }
-        if (!(x - 1 < 0) && !dfsIsVisited[y][x - 1]){
-            if(!isAlphabetUsed[graph[y][x-1]]){
-                max=Math.max(++count,max);
-                dfs(y, x - 1);
-            }
-        }
-        if (!(x + 1 >= xSize) && !dfsIsVisited[y][x + 1]){
-            if(!isAlphabetUsed[graph[y][x+1]]){
-                max=Math.max(++count,max);
-                dfs(y, x + 1);
-            }
-        }
-        count--;
-        isAlphabetUsed[graph[y][x]]=false;
-        dfsIsVisited[y][x]=false;
+        isAlphabetUsed[map[y][x]] = false;
+        isVisited[y][x] = false;
     }
 }
