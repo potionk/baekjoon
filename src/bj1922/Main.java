@@ -25,11 +25,15 @@ public class Main {
 
     public static int kruskal(int n, Edge[] edges) {
         Arrays.sort(edges);
-        int sum = 0;
+        int sum = 0, count = 0;
         for (Edge e : edges) {
+            if (count == n - 1) {
+                break;
+            }
             int a = e.getA();
             int b = e.getB();
             if (find(a) != find(b)) {
+                count++;
                 union(a, b);
                 sum += e.getCost();
             }
