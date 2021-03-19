@@ -41,13 +41,10 @@ public class Main {
                     case 'C' -> count[3]++;
                 }
                 code = getMSCCode(count);
-                if (countMCS.get(code) == null) {
-                    countMCS.put(code, 1);
-                } else {
-                    int thisCount = countMCS.get(code);
-                    countMCS.put(code, thisCount + 1);
-                    result = Math.max(result, thisCount + 1);
-                }
+                countMCS.merge(code, 1, Integer::sum);
+            }
+            for (int c : countMCS.values()) {
+                result = Math.max(c, result);
             }
             bw.write(result + "\n");
         }
