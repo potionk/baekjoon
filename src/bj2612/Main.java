@@ -12,17 +12,11 @@ public class Main {
         char[] A = br.readLine().toCharArray();
         int BLen = Integer.parseInt(br.readLine());
         char[] B = br.readLine().toCharArray();
-        Data[][] dp = new Data[ALen + 1][BLen + 1];
-        for (int i = 1; i < ALen + 1; i++) {
-            dp[i][0] = new Data(-1, -1, -2 * i);
-        }
-        for (int i = 1; i < BLen + 1; i++) {
-            dp[0][i] = new Data(-1, -1, -2 * i);
-        }
-        for (int i = 1; i < ALen + 1; i++) {
-            for (int j = 1; j < BLen + 1; j++) {
-                int score = A[i - 1] == B[j - 1] ? 3 : -2;
-                if (i == 1 && j == 1) {
+        Data[][] dp = new Data[ALen][BLen];
+        for (int i = 0; i < ALen; i++) {
+            for (int j = 0; j < BLen; j++) {
+                int score = A[i] == B[j] ? 3 : -2;
+                if (i == 0 && j == 0) {
                     dp[i][j] = new Data(-1, -1, score);
                 } else {
                     if (dp[i][j].score < score) {
@@ -30,13 +24,12 @@ public class Main {
                     } else {
                         score = dp[i][j].score;
                     }
-
                 }
                 for (int k = 0; k < 3; k++) {
                     int nextY = i + yArrow[k];
                     int nextX = j + xArrow[k];
-                    if (nextY < ALen + 1 && nextX < BLen + 1) {
-                        int nextScore = score + (A[nextY - 1] == B[nextX - 1] ? 3 : -2);
+                    if (nextY < ALen && nextX < BLen) {
+                        int nextScore = score + (A[nextY] == B[nextX] ? 3 : -2);
                         if (dp[nextY][nextX] == null) {
                             if (k == 0) {
                                 dp[nextY][nextX] = new Data(i, j, nextScore);
@@ -61,8 +54,8 @@ public class Main {
         }
         int max = Integer.MIN_VALUE;
         int y = 0, x = 0;
-        for (int i = 1; i < ALen + 1; i++) {
-            for (int j = 1; j < BLen + 1; j++) {
+        for (int i = 0; i < ALen; i++) {
+            for (int j = 0; j < BLen; j++) {
                 if (max < dp[i][j].score) {
                     max = dp[i][j].score;
                     y = i;
@@ -83,10 +76,10 @@ public class Main {
                 y = tempY;
             }
         }
-        for (int i = y - 1; i < finishY; i++) {
+        for (int i = y; i <= finishY; i++) {
             AResult.append(A[i]);
         }
-        for (int i = x - 1; i < finishX; i++) {
+        for (int i = x; i <= finishX; i++) {
             BResult.append(B[i]);
         }
         bw.write(AResult.toString() + "\n");
