@@ -16,10 +16,10 @@ public class Main {
             String[] BInfo = br.readLine().split(" ");
             int BLen = Integer.parseInt(BInfo[0]);
             char[] B = BInfo[1].toCharArray();
-            long[][] dp = new long[ALen + 1][BLen + 1];
+            int[][] dp = new int[ALen + 1][BLen + 1];
             for (int i = 1; i < ALen + 1; i++) {
                 for (int j = 1; j < BLen + 1; j++) {
-                    dp[i][j] = Long.MIN_VALUE;
+                    dp[i][j] = Integer.MIN_VALUE;
                 }
             }
             for (int i = 1; i < ALen + 1; i++) {
@@ -63,7 +63,7 @@ public class Main {
                 return -3;
             }
         }
-        return -1337;
+        return Integer.MIN_VALUE;
     }
 
     public static int getBlankWeight(char c) {
@@ -81,6 +81,6 @@ public class Main {
                 return -1;
             }
         }
-        return -1337;
+        return Integer.MIN_VALUE;
     }
 }
