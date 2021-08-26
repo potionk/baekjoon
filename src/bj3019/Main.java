@@ -24,34 +24,30 @@ public class Main {
         for (int i = 0; i < C; i++) {
             map[i] = Integer.parseInt(mapStr[i]);
         }
-        int count=0;
-        for(int i=0; i<C; i++){
-            int[][] needMapArr=block[P-1];
-            for(int j=0; j<needMapArr.length; j++){
-                int[] needMap=needMapArr[j];
-                if(i+needMap.length<=C){
-                    int[] thisMap= Arrays.copyOfRange(map, i, i+needMap.length);
-                    int min= Integer.MAX_VALUE;
-                    for(int k=0; k<needMap.length; k++){
-                        min=Math.min(min, thisMap[k]);
+        int count = 0;
+        for (int i = 0; i < C; i++) {
+            int[][] needMapArr = block[P - 1];
+            for (int[] needMap : needMapArr) {
+                if (i + needMap.length <= C) {
+                    int[] thisMap = Arrays.copyOfRange(map, i, i + needMap.length);
+                    int min = Integer.MAX_VALUE;
+                    for (int k = 0; k < needMap.length; k++) {
+                        min = Math.min(min, thisMap[k]);
                     }
-                    for(int k=0; k<needMap.length; k++){
-                        thisMap[k]-=min;
-                    }
-                    boolean isMatch=true;
-                    for(int k=0; k<needMap.length; k++){
-                        if(thisMap[k]!=needMap[k]){
-                            isMatch=false;
+                    boolean isMatch = true;
+                    for (int k = 0; k < needMap.length; k++) {
+                        if (thisMap[k] != needMap[k] + min) {
+                            isMatch = false;
                             break;
                         }
                     }
-                    if(isMatch){
+                    if (isMatch) {
                         count++;
                     }
                 }
             }
         }
-        bw.write(count+"");
+        bw.write(count + "");
         br.close();
         bw.close();
     }
