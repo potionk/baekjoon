@@ -19,31 +19,28 @@ public class Main {
             String[] readLine = br.readLine().split(" ");
             int a = Integer.parseInt(readLine[0]) - 1;
             int b = Integer.parseInt(readLine[1]) - 1;
-            LinkedList<Integer> list = graph[a].getList();
-            list.add(b);
-            HashSet<Integer> incomingList = graph[b].getIncomingList();
-            incomingList.add(a);
+            graph[a].getList().add(b);
+            graph[b].getIncomingList().add(a);
         }
-        LinkedList<Integer> S = new LinkedList<>();
+        Queue<Integer> S = new LinkedList<>();
         for (int i = 0; i < N; i++) {
             if (graph[i].getIncomingList().size() == 0) {
                 S.add(i);
             }
         }
-        LinkedList<Integer> queue = new LinkedList<>();
+        Queue<Integer> queue = new LinkedList<>();
         while (!S.isEmpty()) {
-            int n = S.pollFirst();
-            if (isDeleted.contains(n)) {
-                continue;
-            }
-            isDeleted.add(n);
-            queue.add(n);
-            for (int i : graph[n].getList()) {
-                graph[i].getIncomingList().remove(n);
-            }
-            for (int i : graph[n].getList()) {
-                if (graph[i].getIncomingList().size() == 0) {
-                    S.add(i);
+            int n = S.poll();
+            if (!isDeleted.contains(n)) {
+                isDeleted.add(n);
+                queue.add(n);
+                for (int i : graph[n].getList()) {
+                    graph[i].getIncomingList().remove(n);
+                }
+                for (int i : graph[n].getList()) {
+                    if (graph[i].getIncomingList().size() == 0) {
+                        S.add(i);
+                    }
                 }
             }
         }
