@@ -1,7 +1,6 @@
 package bj12100;
 
 import java.io.*;
-import java.util.Arrays;
 
 public class Main {
     static int answer;
@@ -34,125 +33,109 @@ public class Main {
             answer = Math.max(answer, maxBlock);
         } else {
             int[][] newBoard = new int[size][size];
+            int[] nextIdx = new int[size];
             switch (arrow) {
-                case 0 -> {
-                    int[] nextIdx = new int[size];
+                case 0:
                     for (int y = 0; y < size; y++) {
+                        int before = -1;
                         for (int x = 0; x < size; x++) {
                             if (board[y][x] > 0) {
-                                boolean exist = false;
-                                for (int next = x + 1; next < size; next++) {
-                                    if (board[y][next] > 0) {
-                                        if (board[y][next] == board[y][x]) {
-                                            newBoard[y][nextIdx[y]] = board[y][x] * 2;
-                                            maxBlock = Math.max(maxBlock, newBoard[y][nextIdx[y]]);
-                                            nextIdx[y]++;
-                                            exist = true;
-                                            x = next;
-                                        }
-                                        break;
-                                    }
-                                }
-                                if (!exist) {
+                                if (before == board[y][x]) {
+                                    newBoard[y][nextIdx[y] - 1] = newBoard[y][nextIdx[y] - 1] * 2;
+                                    maxBlock = Math.max(maxBlock, newBoard[y][nextIdx[y] - 1]);
+                                    before = -1;
+                                } else {
                                     newBoard[y][nextIdx[y]] = board[y][x];
                                     nextIdx[y]++;
+                                    before = board[y][x];
                                 }
                             }
                         }
                     }
-                }
-                case 1 -> {
-                    int[] nextIdx = new int[size];
+                    break;
+                case 1:
                     for (int i = 0; i < size; i++) {
                         nextIdx[i] = size - 1;
                     }
                     for (int y = 0; y < size; y++) {
+                        int before = -1;
                         for (int x = size - 1; x >= 0; x--) {
                             if (board[y][x] > 0) {
-                                boolean exist = false;
-                                for (int next = x - 1; next >= 0; next--) {
-                                    if (board[y][next] > 0) {
-                                        if (board[y][next] == board[y][x]) {
-                                            newBoard[y][nextIdx[y]] = board[y][x] * 2;
-                                            maxBlock = Math.max(maxBlock, newBoard[y][nextIdx[y]]);
-                                            nextIdx[y]--;
-                                            exist = true;
-                                            x = next;
-                                        }
-                                        break;
-                                    }
-                                }
-                                if (!exist) {
+                                if (before == board[y][x]) {
+                                    newBoard[y][nextIdx[y] + 1] = newBoard[y][nextIdx[y] + 1] * 2;
+                                    maxBlock = Math.max(maxBlock, newBoard[y][nextIdx[y] + 1]);
+                                    before = -1;
+                                } else {
                                     newBoard[y][nextIdx[y]] = board[y][x];
                                     nextIdx[y]--;
+                                    before = board[y][x];
                                 }
                             }
                         }
                     }
-                }
-                case 2 -> {
-                    int[] nextIdx = new int[size];
+                    break;
+                case 2:
                     for (int x = 0; x < size; x++) {
+                        int before = -1;
                         for (int y = 0; y < size; y++) {
                             if (board[y][x] > 0) {
-                                boolean exist = false;
-                                for (int next = y + 1; next < size; next++) {
-                                    if (board[next][x] > 0) {
-                                        if (board[next][x] == board[y][x]) {
-                                            newBoard[nextIdx[x]][x] = board[y][x] * 2;
-                                            maxBlock = Math.max(maxBlock, newBoard[nextIdx[x]][x]);
-                                            nextIdx[x]++;
-                                            exist = true;
-                                            y = next;
-                                        }
-                                        break;
-                                    }
-                                }
-                                if (!exist) {
+                                if (before == board[y][x]) {
+                                    newBoard[nextIdx[x] - 1][x] = newBoard[nextIdx[x] - 1][x] * 2;
+                                    maxBlock = Math.max(maxBlock, newBoard[nextIdx[x] - 1][x]);
+                                    before = -1;
+                                } else {
                                     newBoard[nextIdx[x]][x] = board[y][x];
                                     nextIdx[x]++;
+                                    before = board[y][x];
                                 }
                             }
                         }
                     }
-                }
-                case 3 -> {
-                    int[] nextIdx = new int[size];
+                    break;
+                case 3:
                     for (int i = 0; i < size; i++) {
                         nextIdx[i] = size - 1;
                     }
                     for (int x = 0; x < size; x++) {
+                        int before = -1;
                         for (int y = size - 1; y >= 0; y--) {
                             if (board[y][x] > 0) {
-                                boolean exist = false;
-                                for (int next = y - 1; next >= 0; next--) {
-                                    if (board[next][x] > 0) {
-                                        if (board[next][x] == board[y][x]) {
-                                            newBoard[nextIdx[x]][x] = board[y][x] * 2;
-                                            maxBlock = Math.max(maxBlock, newBoard[nextIdx[x]][x]);
-                                            nextIdx[x]--;
-                                            exist = true;
-                                            y = next;
-                                        }
-                                        break;
-                                    }
-                                }
-                                if (!exist) {
+                                if (before == board[y][x]) {
+                                    newBoard[nextIdx[x] + 1][x] = newBoard[nextIdx[x] + 1][x] * 2;
+                                    maxBlock = Math.max(maxBlock, newBoard[nextIdx[x] + 1][x]);
+                                    before = -1;
+                                } else {
                                     newBoard[nextIdx[x]][x] = board[y][x];
                                     nextIdx[x]--;
+                                    before = board[y][x];
                                 }
                             }
                         }
                     }
+                    break;
+            }
+            if (answer != -1) {
+                int t = answer;
+                for (int i = 0; i < 5 - count; i++) {
+                    t /= 2;
+                }
+                if (maxBlock <= t) {
+                    return;
                 }
             }
             for (int i = 0; i < 4; i++) {
-                move(arrayCopy(newBoard), i, count + 1, maxBlock, size);
+                move(arrayCopy(newBoard, size), i, count + 1, maxBlock, size);
             }
         }
     }
 
-    public static int[][] arrayCopy(int[][] src) {
-        return Arrays.stream(src).map(int[]::clone).toArray(int[][]::new);
+    public static int[][] arrayCopy(int[][] src, int size) {
+        int[][] newArray = new int[size][size];
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                newArray[i][j] = src[i][j];
+            }
+        }
+        return newArray;
     }
 }
