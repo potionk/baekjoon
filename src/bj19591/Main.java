@@ -1,30 +1,28 @@
 package bj19591;
 
 import java.io.*;
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         char[] tc = br.readLine().toCharArray();
-        List<String> list = new ArrayList<>();
+        String[] arr = new String[1000001];
+        int idx = 0;
         StringBuilder sb = new StringBuilder();
         for (char c : tc) {
             if (!isNum(c)) {
-                list.add(sb.toString());
+                arr[idx++] = sb.toString();
                 sb = new StringBuilder();
-                list.add(c + "");
+                arr[idx++] = c + "";
             } else {
                 sb.append(c);
             }
         }
-        list.add(sb.toString());
-        int start = 0, end = list.size();
-        if (list.get(0).equals("")) {
-            list.set(2, "-" + list.get(2));
+        arr[idx++] = sb.toString();
+        int start = 0, end = idx;
+        if (arr[0].equals("")) {
+            arr[2] = "-" + arr[2];
             start = 2;
         }
         while (start < end) {
@@ -33,32 +31,32 @@ public class Main {
                 break;
             }
             if (size > 3) {
-                int leftPriority = getPriority(list.get(start + 1));
-                int rightPriority = getPriority(list.get(end - 2));
+                int leftPriority = getPriority(arr[start + 1]);
+                int rightPriority = getPriority(arr[end - 2]);
                 if (leftPriority < rightPriority) {
-                    list.set(end - 3, calExp(list.get(end - 3), list.get(end - 2), list.get(end - 1)) + "");
+                    arr[end - 3] = calExp(arr[end - 3], arr[end - 2], arr[end - 1]) + "";
                     end -= 2;
                 } else if (leftPriority > rightPriority) {
-                    list.set(start + 2, calExp(list.get(start), list.get(start + 1), list.get(start + 2)) + "");
+                    arr[start + 2] = calExp(arr[start], arr[start + 1], arr[start + 2]) + "";
                     start += 2;
                 } else {
-                    long leftResult = calExp(list.get(start), list.get(start + 1), list.get(start + 2));
-                    long rightResult = calExp(list.get(end - 3), list.get(end - 2), list.get(end - 1));
+                    long leftResult = calExp(arr[start], arr[start + 1], arr[start + 2]);
+                    long rightResult = calExp(arr[end - 3], arr[end - 2], arr[end - 1]);
                     if (leftResult < rightResult) {
-                        list.set(end - 3, rightResult + "");
+                        arr[end - 3] = rightResult + "";
                         end -= 2;
                     } else {
-                        list.set(start + 2, leftResult + "");
+                        arr[start + 2] = leftResult + "";
                         start += 2;
                     }
                 }
             } else {
-                list.set(start + 2, calExp(list.get(start), list.get(start + 1), list.get(start + 2)) + "");
+                arr[start + 2] = calExp(arr[start], arr[start + 1], arr[start + 2]) + "";
                 start += 2;
                 break;
             }
         }
-        bw.write(Long.parseLong(list.get(start)) + "");
+        bw.write(Long.parseLong(arr[start]) + "");
         bw.close();
         br.close();
     }
@@ -68,34 +66,22 @@ public class Main {
     }
 
     public static int getPriority(String operator) {
-        switch (operator) {
-            case "+", "-" -> {
-                return 1;
-            }
-            case "*", "/" -> {
-                return 2;
-            }
-        }
-        return -1;
+        return switch (operator) {
+            case "+", "-" -> 1;
+            case "*", "/" -> 2;
+            default -> -1;
+        };
     }
 
     public static long calExp(String a, String operator, String b) {
         long x = Long.parseLong(a);
         long y = Long.parseLong(b);
-        switch (operator) {
-            case "+" -> {
-                return x + y;
-            }
-            case "-" -> {
-                return x - y;
-            }
-            case "*" -> {
-                return x * y;
-            }
-            case "/" -> {
-                return x / y;
-            }
-        }
-        return -1;
+        return switch (operator) {
+            case "+" -> x + y;
+            case "-" -> x - y;
+            case "*" -> x * y;
+            case "/" -> x / y;
+            default -> -1;
+        };
     }
 }
