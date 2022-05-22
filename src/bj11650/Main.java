@@ -1,48 +1,43 @@
 package bj11650;
 
 import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 public class Main {
-    static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
     public static void main(String[] args) throws IOException {
-        List<Integer> xList=new LinkedList<>();
-        Map<Integer,LinkedList<Integer>> x2y=new HashMap<>();
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-        int numbers = Integer.parseInt(br.readLine());
-        for(int i=0; i<numbers; i++){
-            String[] input=br.readLine().split(" ");
-            int x=Integer.parseInt(input[0]);
-            int y=Integer.parseInt(input[1]);
-            xList.add(x);
-            if(x2y.get(x)==null){
-                LinkedList<Integer> list=new LinkedList<>();
-                list.add(y);
-                x2y.put(x,list);
-            } else {
-                LinkedList<Integer> list=x2y.get(x);
-                list.add(y);
-                x2y.put(x,list);
-            }
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        int pointNumber = Integer.parseInt(br.readLine());
+        List<Point> pointList = new ArrayList<>(pointNumber);
+        while (pointNumber-- > 0) {
+            String[] input = br.readLine().split(" ");
+            pointList.add(new Point(Integer.parseInt(input[1]), Integer.parseInt(input[0])));
         }
-        Collections.sort(xList);
-        Object[] xArray=xList.toArray();
-        int recentSearch=0;
-        for(int i=0; i<xArray.length; i++){
-            int x= (int) xArray[i];
-            if(x==recentSearch)
-                continue;
-            else
-                recentSearch=x;
-            LinkedList<Integer> y=x2y.get(x);
-            if(y.size()!=1)
-                Collections.sort(y);
-            for(int j=0; j<y.size(); j++){
-                bw.write(x+" "+y.get(j)+"\n");
-                bw.flush();
-            }
+        pointList.sort(Comparator.comparing(Point::getX).thenComparing(Point::getY));
+        for (Point p : pointList) {
+            bw.write(p.getX() + " " + p.getY() + "\n");
         }
+        br.close();
         bw.close();
+    }
+}
+
+class Point {
+    int y;
+    int x;
+
+    public Point(int y, int x) {
+        this.y = y;
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public int getX() {
+        return x;
     }
 }
