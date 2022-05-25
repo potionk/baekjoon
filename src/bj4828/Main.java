@@ -60,7 +60,7 @@ public class Main {
             if (g.charAt(1) == 'x') {
                 int gLen = g.length();
                 gLen -= 3;
-                if (gLen % 2 == 1) {
+                if (gLen % 2 == 1 || gLen == 0) {
                     return false;
                 }
             }
