@@ -8,5 +8,5 @@ fun main() {
     repeat(n - 1) {
         br.readLine()
     }
-    println(br.readLine().split(" ").drop(1).joinToString("\n"))
+    println(br.readLine().split(" ").joinToString("\n"))
 }
