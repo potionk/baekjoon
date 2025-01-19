@@ -15,24 +15,16 @@ fun main() {
         if (idx == size) {
             return charList.joinToString("")
         }
-
         for (i in 2 downTo 0) {
             if (count[i] > 0) {
-                if (i == 1) {
-                    if (lastBIdx + 1 >= idx) {
-                        continue
-                    }
-                    if (size - idx < count[1] * 2 - 1) {
-                        continue
-                    }
+                if (i == 1 && lastBIdx + 1 >= idx) {
+                    continue
                 }
-                if (i == 2) {
-                    if (lastCIdx + 2 >= idx) {
-                        continue
-                    }
-                    if (size - idx < (count[2] - 1) * 3 + 1) {
-                        continue
-                    }
+                if (i == 2 && lastCIdx + 2 >= idx) {
+                    continue
+                }
+                if (size - idx < count[1] * 2 - 1 || size - idx < (count[2] - 1) * 3 + 1) {
+                    continue
                 }
                 count[i]--
                 val bIdx = if (i == 1) idx else lastBIdx
