@@ -1,21 +1,22 @@
 package bj13211
 
 import java.io.*
+import kotlin.math.abs
 
 fun main() {
     val br = BufferedReader(InputStreamReader(System.`in`))
+    val (x, y) = br.readLine().split(" ").map { it.toInt() }
     val n = br.readLine().toInt()
-    val set = mutableSetOf<String>()
-    for (i in 0 until n) {
-        set.add(br.readLine())
+    val taxis = mutableListOf<Triple<Int, Int, Int>>() // x, y, distance
+    repeat(n) {
+        val (a, b) = br.readLine().split(" ").map { it.toInt() }
+        taxis.add(Triple(a, b, (calculateManhattanDistance(x, y, a, b))))
     }
-    val m = br.readLine().toInt()
-    var result = 0
-    for (i in 0 until m) {
-        if (set.contains(br.readLine())) {
-            result++
-        }
-    }
-    println(result)
-    br.close()
+    taxis.sortBy { it.third }
+    val nearestTaxi = taxis.first()
+    println("${nearestTaxi.first} ${nearestTaxi.second}")
+}
+
+fun calculateManhattanDistance(x1: Int, y1: Int, x2: Int, y2: Int): Int {
+    return abs(x1 - x2) + abs(y1 - y2)
 }
